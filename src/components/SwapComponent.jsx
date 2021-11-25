@@ -8,7 +8,8 @@ export default function SwapComponent(props) {
     const [coin, setCoin] = useState(["KAR", "KOTHI"]);
     const [amountFrom, setAmountFrom] = useState(0.0);
     const [amountTo, setAmountTo] = useState(0.0);
-
+    const [slippageTolerance, setSlippageTolerance] = useState(0.5); // in percentage.
+    const tolerance = [0.5, 1, 2, 5];
     const rev = () => {
         setCoin([...coin.reverse()]);
         getSwapEstimateAmountTo(amountFrom);
@@ -194,23 +195,52 @@ export default function SwapComponent(props) {
             }
         }
     };
+
+    const onChangeTolerance = (val) => {
+        if( val !== slippageTolerance) {
+            setSlippageTolerance(val);
+        }
+    }
+
     return (
         <div className="tabBody">
+            <div className="tabHeader">Swap</div>
             <BoxTemplate
                 leftHeader={"From"}
-                right={coin[0]}
+                right={<div className="coinWrapper">{coin[0]}</div>}
                 value={amountFrom}
+                showBalance={true}
+                balance={props.holding["amountOfKAR".includes(coin[0]) ? "amountOfKAR" : "amountOfKOTHI"]}
                 onChange={(e) => onChangeAmtFrm(e)}
             />
-            <div className="swapIcon" onClick={() => rev()}>
-                <MdSwapVert />
+            <div className="alignCenter" onClick={() => rev()}>
+                <div className="tabIcon middleIcon" tabIndex={0}><MdSwapVert className="swapIcon"/></div>
             </div>
             <BoxTemplate
                 leftHeader={"To"}
-                right={coin[1]}
+                right={<div className="coinWrapper">{coin[1]}</div>}
                 value={amountTo}
+                showBalance={true}
+                balance={props.holding["amountOfKAR".includes(coin[1]) ? "amountOfKAR" : "amountOfKOTHI"]}
                 onChange={(e) => onChangeAmtTo(e)}
             />
+            <div className="selectTolerance">
+                <div className="toleranceHeading">
+                    SLIPPAGE TOLERANCE
+                </div>
+                <div className="toleranceValues">
+                    {
+                        tolerance.map( val => {
+                            return (<div className={"toleranceCard " + (slippageTolerance === val? "selectedTolerance" : "")}  onClick={() => onChangeTolerance(val)}>
+                                {val + "%"}
+                            </div>)
+                        })
+                    }
+                </div>
+            </div>
+            <div className="transactionFee">
+                    TRANSACTION FEE: {"xyz"}
+            </div>
             <div className="bottomDiv">
                 <div className="btn" onClick={() => onSwap()}>
                     Swap

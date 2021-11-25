@@ -136,17 +136,22 @@ export default function ProvideComponent(props) {
 
   return (
     <div className="tabBody">
+      <div className="tabHeader">Provide</div>
       <BoxTemplate
         leftHeader={"Amount of KAR"}
         value={amountOfKar}
+        showBalance={true}
+        balance={props.holding["amountOfKAR"]}
         onChange={(e) => onChangeAmountOfKar(e)}
       />
-      <div className="swapIcon">
-        <MdAdd />
+      <div className="alignCenter">
+          <div className="tabIcon middleIcon" tabIndex={0}><MdAdd className="plusIcon"/></div>
       </div>
       <BoxTemplate
         leftHeader={"Amount of KOTHI"}
         value={amountOfKothi}
+        showBalance={true}
+        balance={props.holding["amountOfKOTHI"]}
         onChange={(e) => onChangeAmountOfKothi(e)}
       />
       <div className="error">{error}</div>

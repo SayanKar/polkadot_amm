@@ -107,6 +107,7 @@ export default function WithdrawComponent(props) {
   };
   return (
     <div className="tabBody">
+      <div className="tabHeader">Withdraw</div>
       <BoxTemplate
         leftHeader={"Amount:"}
         right={

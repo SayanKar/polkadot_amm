@@ -19,7 +19,14 @@ export default function BoxTemplate(props) {
                         placeholder={"Enter amount"}
                     />
                 </div>
-                <div className="rightContent">{props.right}</div>
+                <div className="rightContent">
+                    {   props.showBalance &&
+                        <div className="rightTopBalance">
+                            BALANCE : <b>{props.balance}</b>
+                        </div>
+                    }
+                    <div className="rightCenter">{props.right}</div>
+                </div>
             </div>
         </div>
     );

@@ -47,15 +47,16 @@ export default function FaucetComponent(props) {
 
     return (
         <div className="tabBody">
+            <div className="tabHeader">Faucet</div>
             <BoxTemplate
                 leftHeader={"Amount of KAR"}
-                right={"KAR"}
+                right={<div className="coinWrapper">KAR</div>}
                 value={amountOfKar}
                 onChange={(e) => onChangeAmountOfKar(e)}
             />
             <BoxTemplate
                 leftHeader={"Amount of KOTHI"}
-                right={"KOTHI"}
+                right={<div className="coinWrapper">KOTHI</div>}
                 value={amountOfKothi}
                 onChange={(e) => onChangeAmountOfKothi(e)}
             />
