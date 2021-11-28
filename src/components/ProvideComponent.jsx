@@ -12,7 +12,7 @@ export default function ProvideComponent(props) {
   // Gets estimates of a token to be provided in the pool given the amount of other token
   const getProvideEstimate = async (token, value) => {
     if (["", "."].includes(value)) return;
-    if (props.contract !== null) {
+    if (props.contract !== null && props?.activeAccount?.address) {
       try {
         if (token === "KAR") {
           await props.contract.query
@@ -23,8 +23,9 @@ export default function ProvideComponent(props) {
             )
             .then((res) => (res = res.output.toHuman()))
             .then((res) => {
+              console.log(res);
               if (res.Err) {
-                if (res.Err.includes("Zero Liquidity")) {
+                if (res.Err.includes("ZeroLiquidity")) {
                   setError(
                     "Message: Empty pool. Set the initial conversion rate."
                   );
@@ -46,7 +47,7 @@ export default function ProvideComponent(props) {
             .then((res) => (res = res.output.toHuman()))
             .then((res) => {
               if (res.Err) {
-                if (res.Err.includes("Zero Liquidity")) {
+                if (res.Err.includes("ZeroLiquidity")) {
                   setError(
                     "Message: Empty pool. Set the initial conversion rate."
                   );
@@ -82,7 +83,7 @@ export default function ProvideComponent(props) {
       alert("Amount should be a valid number");
       return;
     }
-    if (props.contract === null) {
+    if (props.contract === null || !props?.activeAccount?.address) {
       alert("Connect your wallet");
       return;
     } else {

@@ -18,7 +18,7 @@ export default function SwapComponent(props) {
     // Given amount of token in AmountFrom, estimates amount of token in amountTo, i.e. tokens recieved after swap
     const getSwapEstimateAmountTo = async (val) => {
         if (["", "."].includes(val)) return;
-        if (props.contract !== null) {
+        if (props.contract !== null && (props?.activeAccount?.address)) {
             try {
                 if (coin[0] === "KAR") {
                     await props.contract.query
@@ -62,7 +62,7 @@ export default function SwapComponent(props) {
     // Given amount of tokens in amountTo, i.e. the amount recieved after swap, estimates the amount of tokens in amountFrom
     const getSwapEstimateAmountFrm = async (val) => {
         if (["", "."].includes(val)) return;
-        if (props.contract !== null) {
+        if (props.contract !== null && (props?.activeAccount?.address)) {
             try {
                 if (coin[0] === "KAR") {
                     await props.contract.query
@@ -118,7 +118,7 @@ export default function SwapComponent(props) {
             alert("Amount should be a valid number");
             return;
         }
-        if (props.contract === null) {
+        if (props.contract === null || !(props?.activeAccount?.address)) {
             alert("Connect your wallet");
             return;
         } else {
@@ -129,14 +129,16 @@ export default function SwapComponent(props) {
                     .swapToken1(
                         props.activeAccount.address,
                         {value: 0, gasLimit:-1},
-                        amountFrom * PRECISION)
+                        amountFrom * PRECISION,
+                        amountTo * (100 - slippageTolerance) / 100 * PRECISION)
                     .then(res => res.output.toHuman())
                     .then(async (res) => {
                         if(!res.Err){
                             await props.contract.tx
                             .swapToken1(
                                 {value: 0, gasLimit:-1},
-                                amountFrom * PRECISION
+                                amountFrom * PRECISION,
+                                amountTo * (100 - slippageTolerance) / 100 * PRECISION
                             )
                             .signAndSend(
                                 props.activeAccount.address,
@@ -161,14 +163,16 @@ export default function SwapComponent(props) {
                     .swapToken2(
                         props.activeAccount.address,
                         {value: 0, gasLimit:-1},
-                        amountFrom * PRECISION)
+                        amountFrom * PRECISION,
+                        amountTo * (100 - slippageTolerance) / 100 * PRECISION)
                     .then(res => res.output.toHuman())
                     .then(async (res) => {
                         if(!res.Err){
                             await props.contract.tx
-                            .swapToken1(
+                            .swapToken2(
                                 {value: 0, gasLimit:-1},
-                                amountFrom * PRECISION
+                                amountFrom * PRECISION,
+                                amountTo * (100 - slippageTolerance) / 100 * PRECISION
                             )
                             .signAndSend(
                                 props.activeAccount.address,
@@ -239,7 +243,10 @@ export default function SwapComponent(props) {
                 </div>
             </div>
             <div className="transactionFee">
-                    TRANSACTION FEE: {"xyz"}
+                    TRADING FEE: <b>{0.01 * amountFrom + " " + coin[0]}</b>
+            </div>
+            <div className="transactionFee">
+                    MINIMUM {coin[1]} YOU RECIEVE: <b>{amountTo * (100 - slippageTolerance) / 100 }</b>
             </div>
             <div className="bottomDiv">
                 <div className="btn" onClick={() => onSwap()}>

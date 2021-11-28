@@ -522,7 +522,7 @@ body,
 }
 
 .error {
-    color: #f7f3f4;
+    color: var(--dark-grey);
     display: flex;
     justify-content: flex-start;
     padding: 0px 20px;
@@ -582,6 +582,10 @@ body,
     display: flex;
     align-items: center;
     cursor: pointer;
+}
+
+.accountWrapper:hover {
+    border: var(--dark);
 }
 
 .accountTextSection {

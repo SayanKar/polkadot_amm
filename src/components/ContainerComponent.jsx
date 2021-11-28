@@ -27,9 +27,13 @@ export default function ContainerComponent(props) {
 
     // Fetch the pool details and personal assets details.
     async function getHoldings() {
+        if(props.contract === null || !props?.activeAccount?.address) {
+            return;
+        }
         try {
-            await props.contract.query.getMyHoldings(props.activeAccount.address, { value: 0, gasLimit: -1 }).then(res => res.output.toHuman())
+            await props.contract.query.getMyHoldings(props.activeAccount.address, { value: 0, gasLimit: -1 }).then(res => {console.log(res.result.toHuman());return res.output.toHuman();})
                 .then(res => {
+                    console.log(res);
                     setAmountOfKAR(res[0].replace(/,/g, '') / PRECISION);
                     setAmountOfKOTHI(res[1].replace(/,/g, '') / PRECISION);
                     setAmountOfShare(res[2].replace(/,/g, '') / PRECISION);

@@ -8,7 +8,7 @@ export default function WithdrawComponent(props) {
   const [estimateTokens, setEstimateTokens] = useState([]);
   const onChangeAmountOfShare = async (e) => {
     setAmountOfShare(e.target.value);
-    if (!["", "."].includes(e.target.value) && props.contract !== null) {
+    if (!["", "."].includes(e.target.value) && props.contract !== null && props?.activeAccount?.address) {
       try {
         await props.contract.query
           .getWithdrawEstimate(
@@ -37,7 +37,7 @@ export default function WithdrawComponent(props) {
 
   // Gets the maximun share one can withdraw
   const getMaxShare = async () => {
-    if (props.contract !== null) {
+    if (props.contract !== null && props?.activeAccount?.address) {
       setAmountOfShare(props.maxShare);
       await props.contract.query
         .getWithdrawEstimate(
@@ -61,7 +61,7 @@ export default function WithdrawComponent(props) {
       alert("Amount should be a valid number");
       return;
     }
-    if (props.contract === null) {
+    if (props.contract === null || !props?.activeAccount?.address) {
       alert("Connect your wallet");
       return;
     } else {

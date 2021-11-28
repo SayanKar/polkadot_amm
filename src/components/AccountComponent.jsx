@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import Identicon from '@polkadot/react-identicon';
 import "../styles.css";
-import { PRECISION } from "../constants";
 import { MdLogout, MdSwapHoriz } from "react-icons/md"
-import {web3Accounts, web3Enable} from '@polkadot/extension-dapp';
+import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
 export default function AccountComponent(props) {
     const [showTab, setShowTab] = useState(props.activeAccount ? "AccountDetail" : "SelectAccount");
@@ -25,8 +24,7 @@ export default function AccountComponent(props) {
             }
             await web3Accounts()
             .then( res => 
-                {console.log(res);
-                setAccountList(res);}
+                setAccountList(res)
             );
             
         } catch(err) {

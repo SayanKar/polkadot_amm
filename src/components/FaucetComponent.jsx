@@ -17,7 +17,7 @@ export default function FaucetComponent(props) {
 	
     // Funds the account with given amount of Tokens 
     async function onClickFund() {
-        if (props.contract === null) {
+        if (props.contract === null || !props?.activeAccount?.address) {
             alert("Connect your wallet");
             return;
         }
@@ -31,6 +31,7 @@ export default function FaucetComponent(props) {
                 amountOfKar * PRECISION,
                 amountOfKothi * PRECISION
             ).signAndSend(props.activeAccount.address,{signer: props.signer}, async (res) => {
+                console.log("res: ",res);
                 if( res.status.isFinalized ) {
                     await props.getHoldings();
                     alert("Tx successful");

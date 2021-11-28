@@ -16,9 +16,11 @@ export default function App() {
     const blockchainUrl = 'ws://127.0.0.1:9944';
     const [selectedTab, setSelectedTab] = useState("Swap");
     
-    useEffect(async () => {
-        activeAccount &&
-        setSigner(await web3FromSource(activeAccount.meta.source).then(res => res.signer));
+    useEffect(() => {
+        (async () => {
+            activeAccount &&
+            setSigner(await web3FromSource(activeAccount.meta.source).then(res => res.signer));
+        })();
     }, [activeAccount]);
 
     async function connect() {
