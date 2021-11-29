@@ -1,7 +1,8 @@
 export const PRECISION = 1000000;
 export const RE = /^[0-9]*[.]?[0-9]{0,6}$/;
 // Replace the below address with the address of the contract you deployed 
-export const CONTRACT_ADDRESS = "5EyPHZVRBfV4zE3XPUz53CvFqme5owczAzt9fdGuAvgXA9g5";
+export const CONTRACT_ADDRESS = "";//= "5EyPHZVRBfV4zE3XPUz53CvFqme5owczAzt9fdGuAvgXA9g5";
+// Replace the below abi with the abi of the contract you deployed
 export const abi = {
   "source": {
     "hash": "0x91dffc039b1b271632326b8539f51a5662ce7e9dae76b026abcc496ba5dbf8a7",

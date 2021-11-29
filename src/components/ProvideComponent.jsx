@@ -95,7 +95,11 @@ export default function ProvideComponent(props) {
             amountOfKar * PRECISION,
             amountOfKothi * PRECISION
           )
-          .then((res) => (res = res.output.toHuman()))
+          .then((res) => {
+            if (res.result.toHuman().Err?.Module?.message)
+              throw new Error(res.result.toHuman().Err.Module.message);
+            else return res.output.toHuman();
+          })
           .then(async (res) => {
             if (!res.Err) {
               try {
@@ -130,7 +134,7 @@ export default function ProvideComponent(props) {
           });
       } catch (err) {
         alert(err);
-        console.log(err);
+        console.log("Couldn't provide :- ", err);
       }
     }
   };
@@ -146,7 +150,9 @@ export default function ProvideComponent(props) {
         onChange={(e) => onChangeAmountOfKar(e)}
       />
       <div className="alignCenter">
-          <div className="tabIcon middleIcon" tabIndex={0}><MdAdd className="plusIcon"/></div>
+        <div className="tabIcon middleIcon" tabIndex={0}>
+          <MdAdd className="plusIcon" />
+        </div>
       </div>
       <BoxTemplate
         leftHeader={"Amount of KOTHI"}

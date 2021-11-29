@@ -8,7 +8,11 @@ export default function WithdrawComponent(props) {
   const [estimateTokens, setEstimateTokens] = useState([]);
   const onChangeAmountOfShare = async (e) => {
     setAmountOfShare(e.target.value);
-    if (!["", "."].includes(e.target.value) && props.contract !== null && props?.activeAccount?.address) {
+    if (
+      !["", "."].includes(e.target.value) &&
+      props.contract !== null &&
+      props?.activeAccount?.address
+    ) {
       try {
         await props.contract.query
           .getWithdrawEstimate(
@@ -76,7 +80,11 @@ export default function WithdrawComponent(props) {
             { value: 0, gasLimit: -1 },
             amountOfShare * PRECISION
           )
-          .then((res) => res.output.toHuman())
+          .then((res) => {
+            if (res.result.toHuman().Err?.Module?.message)
+              throw new Error(res.result.toHuman().Err.Module.message);
+            else return res.output.toHuman();
+          })
           .then(async (res) => {
             if (!res.Err) {
               await props.contract.tx
@@ -101,7 +109,7 @@ export default function WithdrawComponent(props) {
           });
       } catch (err) {
         alert(err);
-        console.log(err);
+        console.log("Couldn't withdraw :- ", err);
       }
     }
   };
