@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { abi, CONTRACT_ADDRESS } from "./constants";
+import { abi, CONTRACT_ADDRESS, blockchainUrl } from "./constants";
 import ContainerComponent from "./components/ContainerComponent";
 import "./styles.css";
 import { RiWallet3Fill } from "react-icons/ri";
@@ -13,8 +13,9 @@ export default function App() {
   const [myContract, setMyContract] = useState(null);
   const [activeAccount, setActiveAccount] = useState();
   const [signer, setSigner] = useState(null);
-  const blockchainUrl = "ws://127.0.0.1:9944";
   const [selectedTab, setSelectedTab] = useState("Swap");
+  const [network, setNetwork] = useState({url: blockchainUrl, address: CONTRACT_ADDRESS});
+  const [connectBtn, setConnectBtn] = useState("Connect your wallet");
 
   useEffect(() => {
     (async () => {
@@ -27,15 +28,23 @@ export default function App() {
     })();
   }, [activeAccount]);
 
-  async function connect() {
+  async function connect(url = network.url, address = network.address) {
     try {
-      console.log("----- Connect called -----");
-      const wsProvider = new WsProvider(blockchainUrl);
+      setConnectBtn("Connecting...");
+      console.log("----- Connect called -----", url, address);
+      const wsProvider = new WsProvider( url );
+      console.log("Provider", wsProvider);
       const api = await ApiPromise.create({ provider: wsProvider });
-      const contract = new ContractPromise(api, abi, CONTRACT_ADDRESS);
+      const contract = new ContractPromise(api, abi, address);
       setMyContract(contract);
       setSelectedTab("Account");
+      setNetwork({
+        "url": url,
+        "address": address
+      })
+      setConnectBtn("Connect your wallet");
     } catch (err) {
+      alert("Couldn't connect to wallet :- ", err);
       console.log("Couldn't connect to wallet :- ", err);
     }
   }
@@ -50,7 +59,7 @@ export default function App() {
         {myContract === null || activeAccount == null ? (
           <div className="connectBtn" onClick={() => connect()}>
             <RiWallet3Fill className="accountIcon" />
-            <div className="connectWalletText">Connect your wallet</div>
+            <div className="connectWalletText">{connectBtn}</div>
           </div>
         ) : (
           <div className="connected">
@@ -68,11 +77,13 @@ export default function App() {
       <ContainerComponent
         contract={myContract}
         selectedTab={selectedTab}
-        connect={() => connect()}
+        connect={(url, addrs) => connect(url, addrs)}
         activeAccount={activeAccount}
         signer={signer}
         setActiveAccount={(val) => setActiveAccount(val)}
         setActiveTab={(val) => setSelectedTab(val)}
+        setNetwork={(val) => setNetwork(val)}
+        network={network}
       />
     </div>
   );

@@ -9,7 +9,7 @@ export default function AccountComponent(props) {
     props.activeAccount ? "AccountDetail" : "SelectAccount"
   );
   const [accountList, setAccountList] = useState([]);
-
+  console.log("Contract", props.contract);
   const onChangeShowTab = async (val) => {
     setShowTab(val);
     if (val === "SelectAccount") {
@@ -70,7 +70,7 @@ export default function AccountComponent(props) {
       {showTab === "AccountDetail" && (
         <>
           <div className="tabHeader">Account</div>
-          {props?.activeAccount?.address ? (
+          {props?.activeAccount?.address && (
             <>
               <div className="accountDetail">
                 <div className="accountdetailIcon">
@@ -144,24 +144,31 @@ export default function AccountComponent(props) {
                       {props.holding["totalShare"]}
                     </div>
                   </div>
+                  <div className="row">
+                    <div className="attributeName">Trading Fee</div>
+                    <div className="attributeValue">
+                      {props.holding["tradingFees"] + "%"}
+                    </div>
+                  </div>
                 </div>
               </div>
             </>
-          ) : (
-            <div className="accountConnectBtn" onClick={() => props.connect()}>
-              Connect your wallet
-            </div>
           )}
         </>
       )}
 
-      {showTab === "SelectAccount" && (
-        <>
-          <div className="tabHeader">Select Account</div>
-          <div className="miniText"> Select an account to work with</div>
-          {accountList && renderAccounts()}
-        </>
-      )}
+      {showTab === "SelectAccount" &&
+        (props.contract === null ? (
+          <div className="accountConnectBtn" onClick={() => props.connect()}>
+            Connect your wallet
+          </div>
+        ) : (
+          <>
+            <div className="tabHeader">Select Account</div>
+            <div className="miniText"> Select an account to work with</div>
+            {accountList && renderAccounts()}
+          </>
+        ))}
     </div>
   );
 }

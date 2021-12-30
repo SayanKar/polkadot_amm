@@ -5,10 +5,11 @@ import ProvideComponent from "./ProvideComponent";
 import WithdrawComponent from "./WithdrawComponent";
 import FaucetComponent from "./FaucetComponent";
 import AccountComponent from "./AccountComponent";
+import SettingComponent from "./SettingComponent";
 import { PRECISION } from "../constants";
 import { MdSwapVert } from "react-icons/md";
 import { GiWaterDrop } from "react-icons/gi";
-import { RiRefundFill, RiHandCoinFill, RiWallet3Fill } from "react-icons/ri";
+import { RiRefundFill, RiHandCoinFill, RiWallet3Fill, RiSettings4Fill } from "react-icons/ri";
 
 export default function ContainerComponent(props) {
   const activeTab = props.selectedTab;
@@ -19,6 +20,7 @@ export default function ContainerComponent(props) {
   const [totalKAR, setTotalKAR] = useState(0);
   const [totalKOTHI, setTotalKOTHI] = useState(0);
   const [totalShare, setTotalShare] = useState(0);
+  const [tradingFees, setTradingFees] = useState(0);
 
   useEffect(() => {
     getHoldings();
@@ -57,6 +59,7 @@ export default function ContainerComponent(props) {
           setTotalKAR(res[0].replace(/,/g, "") / PRECISION);
           setTotalKOTHI(res[1].replace(/,/g, "") / PRECISION);
           setTotalShare(res[2].replace(/,/g, "") / PRECISION);
+          setTradingFees(res[3].replace(/,/g, "") / 10);
         })
         .catch((err) => {
           console.log("Couldn't fetch pool details :-", err);
@@ -76,6 +79,7 @@ export default function ContainerComponent(props) {
     { name: "Withdraw", icon: <RiRefundFill className="withdrawIcon" /> },
     { name: "Faucet", icon: <RiHandCoinFill className="faucetIcon" /> },
     { name: "Account", icon: <RiWallet3Fill className="accountIcon" /> },
+    { name: "Settings", icon: <RiSettings4Fill className="accountIcon"/>}
   ];
 
   return (
@@ -115,7 +119,7 @@ export default function ContainerComponent(props) {
             getHoldings={() => getHoldings()}
             activeAccount={props.activeAccount}
             signer={props.signer}
-            holding={{ amountOfKAR, amountOfKOTHI }}
+            holding={{ amountOfKAR, amountOfKOTHI, tradingFees }}
           />
         )}
         {activeTab === "Provide" && (
@@ -159,7 +163,17 @@ export default function ContainerComponent(props) {
               totalShare,
               totalKAR,
               totalKOTHI,
+              tradingFees,
             }}
+          />
+        )}
+        {activeTab === "Settings" && (
+          <SettingComponent 
+            setNetwork={(val) => props.setNetwork(val)}
+            network={props.network}
+            connect={(url, addrs) => props.connect(url, addrs)}
+            activeAccount={props.activeAccount}
+            setActiveTab={(val) => props.setActiveTab(val)}
           />
         )}
       </div>
