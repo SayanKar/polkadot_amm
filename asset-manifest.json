@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/polkadot_amm/static/css/main.63764229.chunk.css",
+    "main.js": "/polkadot_amm/static/js/main.3e1d43c9.chunk.js",
+    "main.js.map": "/polkadot_amm/static/js/main.3e1d43c9.chunk.js.map",
+    "runtime-main.js": "/polkadot_amm/static/js/runtime-main.51b70b86.js",
+    "runtime-main.js.map": "/polkadot_amm/static/js/runtime-main.51b70b86.js.map",
+    "static/js/2.e9693b35.chunk.js": "/polkadot_amm/static/js/2.e9693b35.chunk.js",
+    "static/js/2.e9693b35.chunk.js.map": "/polkadot_amm/static/js/2.e9693b35.chunk.js.map",
+    "index.html": "/polkadot_amm/index.html",
+    "static/css/main.63764229.chunk.css.map": "/polkadot_amm/static/css/main.63764229.chunk.css.map",
+    "static/js/2.e9693b35.chunk.js.LICENSE.txt": "/polkadot_amm/static/js/2.e9693b35.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.51b70b86.js",
+    "static/js/2.e9693b35.chunk.js",
+    "static/css/main.63764229.chunk.css",
+    "static/js/main.3e1d43c9.chunk.js"
+  ]
+}
